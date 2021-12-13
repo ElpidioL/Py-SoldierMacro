@@ -10,7 +10,7 @@ keyRd = []
 timeRd = []
 listaFinalChaves = []
 def createMacro(macroKeys,name):
-    save_path = './macroScripts'
+    save_path = './MacroScripts'
     completeNamePath = os.path.join(save_path, name)
     fi = open(completeNamePath, "w")
     for st in macroKeys:
