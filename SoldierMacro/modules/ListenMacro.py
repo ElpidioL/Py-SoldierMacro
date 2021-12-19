@@ -14,19 +14,18 @@ class listDeChaves:
 
 def keylist():
     pegarLista = []
-    start = time.time()
-    listaTempo = [start]
+    listaTempo = [time.perf_counter()]
 
     def on_click(x, y, button, pressed):
         if pressed:
             print('{0}, {1}) with {2}'.format(x, y, button))
-            end = time.time() - sum(listaTempo)
+            end = time.perf_counter() - sum(listaTempo)
             listaTempo.append(end)
             pegarLista.append(listDeChaves('{0},{1},{2}'.format(x, y, button), listaTempo[-1]))
 
     def on_press(key):
         try:
-            end = time.time() - sum(listaTempo)
+            end = time.perf_counter() - sum(listaTempo)
             listaTempo.append(end)
             pegarLista.append(listDeChaves('{0}'.format(key), listaTempo[-1]))
 

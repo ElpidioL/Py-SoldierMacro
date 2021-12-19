@@ -1,0 +1,2 @@
+pynput==1.7.5
+PySimpleGUI==4.55.1

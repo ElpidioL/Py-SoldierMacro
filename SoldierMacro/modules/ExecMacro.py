@@ -11,8 +11,17 @@ def executarChaves(listaFinal,stopKey,tempo='False', ):
     stopKey = getattr(keyboardController._Key, stopKey)
     breakCode = [False]
 
-    # Press and release space
     for i in range(len(listaFinal)):
+        def on_release(key):
+            print('{0} released'.format(key))
+            if key == stopKey:
+                breakCode[0] = True
+                keyboard_listener.stop()
+                return False
+        if i == 0:
+            keyboard_listener = KeyboardListener(on_release=on_release)
+            keyboard_listener.start()
+
         if tempo != 'False':
             time.sleep(float(tempo))
         else:
@@ -52,21 +61,11 @@ def executarChaves(listaFinal,stopKey,tempo='False', ):
             keyboardController.press(contextVAR)
             keyboardController.release(contextVAR)
 
-        def on_release(key):
-            print('{0} released'.format(key))
-            if key == stopKey:
-                breakCode[0] = True
-                keyboard_listener.stop()
-                return False
-
         if breakCode[0]:
             keyboard_listener.stop()
             return False
         if i == (len(listaFinal) -1):
             keyboard_listener.stop()
             return False
-        if i == 0:
-            keyboard_listener = KeyboardListener(on_release=on_release)
-            keyboard_listener.start()
 
 
