@@ -18,6 +18,8 @@ def createMacro(macroKeys,name):
     fi.close()
 
 def readMacro(folder):
+    listaFinalChaves.clear(),keyRd.clear(),timeRd.clear()
+
     fi = open(folder, "r")
     x = fi.read().split(";")
     x.pop()
@@ -26,9 +28,7 @@ def readMacro(folder):
             keyRd.append(value)
         else:
             timeRd.append(value)
-
     for idx, value in enumerate(keyRd):
         listaFinalChaves.append(listDeChaves(keyRd[idx],timeRd[idx]))
-
     fi.close()
     return listaFinalChaves

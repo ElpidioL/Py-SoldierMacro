@@ -1,10 +1,5 @@
-import PySimpleGUI as sg
 import time
-from modules import KeyFixTranslate
-from modules import ReadWriteFile
-from modules import ExecMacro
-import pynput.mouse
-from pynput import keyboard, mouse
+from pynput import keyboard
 from pynput.mouse import Listener as MouseListener
 from pynput.keyboard import Listener as KeyboardListener
 

@@ -1,11 +1,15 @@
 import time
 from modules import KeyFixTranslate
+from pynput import keyboard
+from pynput.keyboard import Listener as KeyboardListener
 import pynput.mouse
 from pynput.mouse import Button
 
-def executarChaves(listaFinal ,tempo='False'):
-    keyboard = pynput.keyboard.Controller()
+def executarChaves(listaFinal,stopKey,tempo='False', ):
+    keyboardController = pynput.keyboard.Controller()
     mouse = pynput.mouse.Controller()
+    stopKey = getattr(keyboardController._Key, stopKey)
+    breakCode = [False]
 
     # Press and release space
     for i in range(len(listaFinal)):
@@ -26,14 +30,14 @@ def executarChaves(listaFinal ,tempo='False'):
             mouse.press(cliqueTypeGet)
             mouse.release(cliqueTypeGet)
 
-        elif len(keyAtual) == 3 and "Key." not in listaFinal[i - 1].chave or len(keyAtual) == 5 and "Key." not in listaFinal[i -1].chave:
+        elif len(keyAtual) == 3 and "Key." not in listaFinal[i - 1].chave or len(keyAtual) == 5 and "Key." not in listaFinal[i -1].chave or len(keyAtual) == 5 and ("Key." not in listaFinal[i -1].chave or "enter" in listaFinal[i -1].chave or "backspace" in listaFinal[i -1].chave):
             keyAtual = keyAtual.replace("'","")
             if len(keyAtual) > 1:
                 keyAtual = keyAtual.replace("[", "")
                 keyAtual = keyAtual.replace("]", "")
 
-            keyboard.press(keyAtual)
-            keyboard.release(keyAtual)
+            keyboardController.press(keyAtual)
+            keyboardController.release(keyAtual)
 
         elif i > 0 and "Key.tab" in listaFinal[i].chave and keyAtual == listaFinal[i - 1].chave:
             KeyFixTranslate.tabChanger()
@@ -44,6 +48,25 @@ def executarChaves(listaFinal ,tempo='False'):
         elif '\\' not in keyAtual:
             keyAtual = listaFinal[i].chave.replace("'", "")
             keyAtual = keyAtual.replace("Key.", "")
-            contextVAR = getattr(keyboard._Key, keyAtual)
-            keyboard.press(contextVAR)
-            keyboard.release(contextVAR)
+            contextVAR = getattr(keyboardController._Key, keyAtual)
+            keyboardController.press(contextVAR)
+            keyboardController.release(contextVAR)
+
+        def on_release(key):
+            print('{0} released'.format(key))
+            if key == stopKey:
+                breakCode[0] = True
+                keyboard_listener.stop()
+                return False
+
+        if breakCode[0]:
+            keyboard_listener.stop()
+            return False
+        if i == (len(listaFinal) -1):
+            keyboard_listener.stop()
+            return False
+        if i == 0:
+            keyboard_listener = KeyboardListener(on_release=on_release)
+            keyboard_listener.start()
+
+
