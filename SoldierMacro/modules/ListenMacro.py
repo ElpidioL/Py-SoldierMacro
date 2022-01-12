@@ -6,6 +6,7 @@ from pynput.keyboard import Listener as KeyboardListener
 
 listDeComandos =[]
 listaFinal = []
+stopAwait = []
 
 class listDeChaves:
     def __init__(self, chave, tempo):
@@ -36,6 +37,7 @@ def keylist():
         print('{0} released'.format(key))
         if key == keyboard.Key.esc:
             # Stop listener
+            stopAwait.append(True)
             mouse_listener.stop()
             pegarLista.pop()
             return False
@@ -49,4 +51,4 @@ def keylist():
     keyboard_listener.start()
     mouse_listener.start()
 
-    return pegarLista
+    return pegarLista, stopAwait

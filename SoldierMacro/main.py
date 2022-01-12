@@ -1,3 +1,5 @@
+import time
+
 import PySimpleGUI as sg
 from modules import ReadWriteFile
 from modules import ExecMacro
@@ -59,11 +61,16 @@ def main():
             break
         if event == '-record-':
             window.minimize()
-            listaFinal = ListenMacro.keylist()
+            listaFinal,stopAwait = ListenMacro.keylist()
+            while len(stopAwait) == 0: # i used an array cuz i'm not sure how to use variables from outer scope and arrays let you append even from outside the scope
+                time.sleep(5)
 
+            sg.popup_ok('Macro recorded')
+            time.sleep(2)
+
+            listaListBox.clear()
             for key, ind in enumerate(listaFinal):
                 listaListBox.append(f'chave: {listaFinal[key].chave},    tempo: {listaFinal[key].tempo}')
-                values['-fileList-'] = 'cavalo'
             window['-fileList-'].update(listaListBox)
 
         if event == '-saveButton-':
@@ -88,6 +95,8 @@ def main():
         if event == "-applyMacro-":
             if values["-folderText-"]:
                 listaFinal = ReadWriteFile.readMacro(values["-folderText-"])
+
+                listaListBox.clear()
                 for key, ind in enumerate(listaFinal):
                     listaListBox.append(f'chave: {listaFinal[key].chave},    tempo: {listaFinal[key].tempo}')
                 window['-fileList-'].update(listaListBox)
