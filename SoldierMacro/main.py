@@ -62,15 +62,16 @@ def main():
         if event == '-record-':
             window.minimize()
             listaFinal,stopAwait = ListenMacro.keylist()
+            stopAwait.clear()
             while len(stopAwait) == 0: # i used an array cuz i'm not sure how to use variables from outer scope and arrays let you append even from outside the scope
-                time.sleep(5)
+                time.sleep(3)
 
             sg.popup_ok('Macro recorded')
             time.sleep(2)
 
             listaListBox.clear()
             for key, ind in enumerate(listaFinal):
-                listaListBox.append(f'chave: {listaFinal[key].chave},    tempo: {listaFinal[key].tempo}')
+                listaListBox.append(f'Time: {listaFinal[key].tempo},    Key: {listaFinal[key].chave}')
             window['-fileList-'].update(listaListBox)
 
         if event == '-saveButton-':
@@ -80,7 +81,7 @@ def main():
             window["-saveButton-"].update(visible=False)
 
         if event == '-confirmButton-' and values["-inputSaveFileName-"]:
-            ReadWriteFile.createMacro(listaFinal,values["-inputSaveFileName-"] +".txt")
+            ReadWriteFile.createMacro(listaFinal,values["-inputSaveFileName-"] + ".txt")
             window["-inputSaveFileName-"].update(visible=False)
             window["-confirmButton-"].update(visible=False)
             window["-cancelButton-"].update(visible=False)
@@ -98,7 +99,7 @@ def main():
 
                 listaListBox.clear()
                 for key, ind in enumerate(listaFinal):
-                    listaListBox.append(f'chave: {listaFinal[key].chave},    tempo: {listaFinal[key].tempo}')
+                    listaListBox.append(f'Time: {listaFinal[key].tempo},         Key: {listaFinal[key].chave}')
                 window['-fileList-'].update(listaListBox)
 
             else:
@@ -106,17 +107,20 @@ def main():
 
         if event == '-play-':
             window.minimize()
-            for key, ind in enumerate(listaFinal):
-                listaListBox.append(f'chave: {listaFinal[key].chave},    tempo: {listaFinal[key].tempo}')
-                values['-fileList-'] = 'cavalo'
-            window['-fileList-'].update(listaListBox)
-            if values['-repeatTimes-'] != "":
-                for i in range(int(values['-repeatTimes-'])):
-                    if values ['-customTime-'] != "":
-                        ExecMacro.executarChaves(listaFinal,values['-stopKey-'],values['-customTime-'])
-                    else:
-                        ExecMacro.executarChaves(listaFinal, values['-stopKey-'])
-            sg.popup_ok('Macro finished')
+            try:
+                for key, ind in enumerate(listaFinal):
+                    listaListBox.append(f'Time: {listaFinal[key].tempo},         Key: {listaFinal[key].chave}')
+                    values['-fileList-'] = 'cavalo'
+                window['-fileList-'].update(listaListBox)
+                if values['-repeatTimes-'] != "":
+                    for i in range(int(values['-repeatTimes-'])):
+                        if values ['-customTime-'] != "":
+                            ExecMacro.executarChaves(listaFinal,values['-stopKey-'],values['-customTime-'])
+                        else:
+                            ExecMacro.executarChaves(listaFinal, values['-stopKey-'])
+                sg.popup_ok('Macro finished')
+            except:
+                sg.popup_ok('You need to select or register a Macro first')
 
         if event == '-folderText-':
             window["-folderText-"].update(visible=True)

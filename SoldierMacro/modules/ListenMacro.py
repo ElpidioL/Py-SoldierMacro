@@ -21,13 +21,13 @@ def keylist():
         if pressed:
             print('{0}, {1}) with {2}'.format(x, y, button))
             end = time.perf_counter() - sum(listaTempo)
-            listaTempo.append(end)
+            listaTempo.append(float('%f' % end))
             pegarLista.append(listDeChaves('{0},{1},{2}'.format(x, y, button), listaTempo[-1]))
 
     def on_press(key):
         try:
             end = time.perf_counter() - sum(listaTempo)
-            listaTempo.append(end)
+            listaTempo.append(float('%f' % end ))
             pegarLista.append(listDeChaves('{0}'.format(key), listaTempo[-1]))
 
         except AttributeError:
