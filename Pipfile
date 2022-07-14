@@ -1,0 +1,13 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pynput = "==1.7.5"
+pysimplegui = "==4.55.1"
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"
